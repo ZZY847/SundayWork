@@ -5,5 +5,10 @@ spring:
     password: Zzy051121
     driver-class-name: com.mysql.cj.jdbc.Driver
 mybatis:
+  # 告诉 Spring Boot 去 resources/mapper 下找所有的 .xml 文件
+  mapper-locations: classpath:mapper/*.xml
+  # 实体类别名包（可选但强烈推荐），配了之后 XML 里的 resultType 就不用写全路径了
+  type-aliases-package: com.example.sundaywork.entity
   configuration:
+    # 开启驼峰命名映射：数据库的 visit_time 会自动映射到 Java 的 visitTime
     map-underscore-to-camel-case: true

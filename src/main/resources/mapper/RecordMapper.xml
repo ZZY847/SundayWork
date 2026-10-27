@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 核心1：namespace 必须是 Mapper 接口的全路径 -->
+<mapper namespace="com.example.sundaywork.mapper.RecordMapper">
+
+    <!-- 核心2：id 必须和接口方法名完全一致 -->
+    <insert id="insert" parameterType="com.example.sundaywork.entity.Record" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO record (content, visit_time)
+        VALUES (#{content}, #{visitTime})
+    </insert>
+
+    <select id="selectLatest" resultType="com.example.sundaywork.entity.Record">
+        SELECT * FROM record ORDER BY id DESC LIMIT 1
+    </select>
+
+    <update id="updateLatestTime">
+        UPDATE record
+        SET visit_time = #{visitTime}
+        WHERE id = (SELECT id FROM (SELECT MAX(id) AS id FROM record) AS temp)
+    </update>
+
+    <delete id="deleteLatest">
+        DELETE FROM record
+        WHERE id = (SELECT id FROM (SELECT MAX(id) AS id FROM record) AS temp)
+    </delete>
+
+</mapper>
